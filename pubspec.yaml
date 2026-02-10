@@ -1,0 +1,14 @@
+name: dynafeat
+description: Library for implementing feature flag functionality.
+version: 0.9.7
+repository: https://github.com/karbunkul/dart_dynafeat
+
+environment:
+  sdk: ^3.10.7
+
+dependencies:
+  meta: ^1.18.1
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

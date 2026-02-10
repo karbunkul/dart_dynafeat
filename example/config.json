@@ -1,0 +1,66 @@
+{
+  "rev": 2,
+  "context": [
+    {
+      "id": "userId",
+      "summary": "Логин пользователя",
+      "type": "string",
+      "rev": 3
+    },
+    {
+      "id": "os",
+      "summary": "Операционная система",
+      "type": "string",
+      "values": [
+        "macos",
+        "ios",
+        "android"
+      ]
+    },
+    {
+      "id": "flavor",
+      "summary": "Тип сборки приложения",
+      "type": "string",
+      "rev": 3,
+      "values": [
+        "dev",
+        "beta",
+        "prod"
+      ]
+    }
+  ],
+  "features": [
+    {
+      "id": "authBaseUrl",
+      "type": "string",
+      "summary": "Базовый адрес сервера авторизации",
+      "rev": 2,
+      "value": 1
+    },
+    {
+      "id": "port",
+      "type": "num",
+      "summary": "TCP порт",
+      "rules": [
+        {
+          "id": "port",
+          "summary": "TCP порт на основе flavor",
+          "conditions": [
+            {
+              "context": "flavor",
+              "op": "eq",
+              "value": "prod"
+            },
+            {
+              "context": "os",
+              "op": "end",
+              "value": "windows"
+            }
+          ],
+          "value": 5000
+        }
+      ],
+      "value": 3000
+    }
+  ]
+}
