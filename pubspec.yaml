@@ -4,7 +4,7 @@ version: 0.9.7
 repository: https://github.com/karbunkul/dart_dynafeat
 
 environment:
-  sdk: ^3.10.7
+  sdk: ^3.9.0
 
 dependencies:
   meta: ^1.18.1
