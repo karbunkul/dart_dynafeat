@@ -22,7 +22,6 @@ void main() {
         id: 'authBaseUrl',
         summary: 'Базовый адрес сервера авторизации',
         value: 'https://cool.auth.server.com/api',
-        rev: 2,
       ),
       Feature.number(
         id: 'port',

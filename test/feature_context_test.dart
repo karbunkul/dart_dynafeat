@@ -52,16 +52,11 @@ void main() {
 
         expect(ctx.id, 'flavor');
         expect(ctx.type, FeatureType.string);
-        // expect(ctx.rev, 1);
         expect(ctx.values, equals(['dev', 'prod']));
       });
 
       test('import should fallback to string type if type is missing', () {
-        final raw = {
-          'id': 'user_id',
-          'summary': 'User identifier',
-          // type is missing
-        };
+        final raw = {'id': 'user_id', 'summary': 'User identifier'};
 
         final ctx = Context.import(raw);
         expect(ctx.type, FeatureType.string);

@@ -4,7 +4,6 @@ final class Rule<T extends Object> {
   final String id;
   final List<Condition> conditions;
   final String? summary;
-  // final int? rev;
   final T value;
 
   Rule({
@@ -12,7 +11,6 @@ final class Rule<T extends Object> {
     required this.conditions,
     required this.summary,
     required this.value,
-    // this.rev,
   });
 
   late final Set<String> dependencies = {}
@@ -60,7 +58,6 @@ final class Rule<T extends Object> {
     return {
       'id': id,
       if (summary != null) 'summary': summary!,
-      // if (rev != null) 'rev': rev!,
       'conditions': conditions.map((e) => e.export()).toList(),
       'value': value,
     };

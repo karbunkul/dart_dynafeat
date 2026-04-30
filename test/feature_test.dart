@@ -45,7 +45,7 @@ void main() {
       });
     });
 
-    group('Rules & Revisions', () {
+    group('Rules', () {
       test('hasRules should be true only when rules are not empty', () {
         final featureNoRules = Feature.number(id: '1', summary: 's', value: 1);
         final featureWithRules = Feature.number(
@@ -58,19 +58,6 @@ void main() {
         expect(featureNoRules.hasRules(), isFalse);
         expect(featureWithRules.hasRules(), isTrue);
       });
-
-      // test('hasRev should detect if revision is present', () {
-      //   final noRev = Feature.string(id: '1', summary: 's', value: 'a');
-      //   final withRev = Feature.string(
-      //     id: '2',
-      //     summary: 's',
-      //     value: 'a',
-      //     rev: 5,
-      //   );
-      //
-      //   expect(noRev.hasRev(), isFalse);
-      //   expect(withRev.hasRev(), isTrue);
-      // });
     });
 
     group('Export (Serialization)', () {
@@ -85,11 +72,10 @@ void main() {
 
         expect(json['id'], 'theme');
         expect(json['value'], 'dark');
-        expect(json.containsKey('rev'), isFalse);
         expect(json.containsKey('rules'), isFalse);
       });
 
-      test('export should contain rev and rules when they are set', () {
+      test('export should contain rules when they are set', () {
         final feature = Feature.number(
           id: 'limit',
           summary: 'Limit',
@@ -101,32 +87,32 @@ void main() {
         expect(json['rules'], isA<List>());
         expect((json['rules'] as List).length, 1);
       });
+
+      test('Feature.number should export correct JSON structure', () {
+        final feature = Feature.number(
+          id: 'port',
+          summary: 'test port',
+          value: 8080,
+        );
+
+        final json = feature.export();
+
+        expect(json['type'], 'num');
+        expect(json['value'], 8080);
+        expect(json.containsKey('rules'), isFalse);
+      });
     });
 
-    test('Feature.number should export correct JSON structure', () {
-      final feature = Feature.number(
-        id: 'port',
-        summary: 'test port',
-        value: 8080,
-        rev: 1,
+    test('Rule should resolve value only when context matches conditions', () {
+      final rule = Rule<String>(
+        id: 'prod_url',
+        summary: 'Production API URL',
+        value: 'https://api.production.com',
+        conditions: [Condition.eq('env', 'prod')],
       );
 
-      final json = feature.export();
-
-      expect(json['type'], 'num');
-      expect(json['value'], 8080);
-      expect(json.containsKey('rules'), isFalse);
-    });
-
-    test('hasRules should return true when rules are provided', () {
-      final feature = Feature.number(
-        id: 'port',
-        summary: 'test',
-        value: 3000,
-        rules: [],
-      );
-
-      expect(feature.hasRules(), isFalse);
+      expect(rule.resolve({'env': 'staging'}), isNull);
+      expect(rule.resolve({'env': 'prod'}), 'https://api.production.com');
     });
 
     test('Feature.string should validate correctly', () {

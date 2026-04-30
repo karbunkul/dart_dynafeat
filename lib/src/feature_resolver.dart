@@ -93,7 +93,13 @@ final class FeatureResolver {
   }
 
   /// Retrieves an object from the cache by its [key].
+  ///
+  /// Updates the position of the entry to maintain LRU order.
   Object? _fromCache(String key) {
-    return _cache[key];
+    final value = _cache.remove(key);
+    if (value != null) {
+      _cache[key] = value;
+    }
+    return value;
   }
 }

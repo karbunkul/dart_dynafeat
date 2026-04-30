@@ -106,19 +106,24 @@ enum Operation {
   // --- Implementation Details ---
 
   bool _opStart(Object context, Object value) {
-    final str = context as String;
-    final castValue = value as String;
-    return str.startsWith(castValue);
+    if (context is String && value is String) {
+      return context.startsWith(value);
+    }
+    return false;
   }
 
   bool _opEnd(Object context, Object value) {
-    final str = context as String;
-    final castValue = value as String;
-    return str.endsWith(castValue);
+    if (context is String && value is String) {
+      return context.endsWith(value);
+    }
+    return false;
   }
 
   bool _opPattern(Object context, Object value) {
-    return RegExp(value as String).hasMatch(context as String);
+    if (context is String && value is String) {
+      return RegExp(value).hasMatch(context);
+    }
+    return false;
   }
 
   bool _opContains(Object context, Object value) {
@@ -126,20 +131,34 @@ enum Operation {
   }
 
   bool _opAny(Object context, Object value) {
-    return (value as List).contains(context);
+    if (value is List) {
+      return value.contains(context);
+    }
+    return false;
   }
 
   bool _opRange(Object context, Object value) {
-    final list = value as List;
-    final numContext = context as num;
-    return numContext >= (list[0] as num) && numContext <= (list[1] as num);
+    if (context is num && value is List && value.length == 2) {
+      final min = value[0];
+      final max = value[1];
+      if (min is num && max is num) {
+        return context >= min && context <= max;
+      }
+    }
+    return false;
   }
 
   bool _opLess(Object context, Object value) {
-    return (context as num) < (value as num);
+    if (context is num && value is num) {
+      return context < value;
+    }
+    return false;
   }
 
   bool _opGreater(Object context, Object value) {
-    return (context as num) > (value as num);
+    if (context is num && value is num) {
+      return context > value;
+    }
+    return false;
   }
 }

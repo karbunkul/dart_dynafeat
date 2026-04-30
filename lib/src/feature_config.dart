@@ -91,8 +91,6 @@ final class FeatureConfig {
   /// This includes checking for duplicate feature IDs, ensuring all
   /// context variables used in rules are defined, and verifying
   /// feature value types.
-  ///
-  /// Throws an [UnimplementedError] in the current version.
   void validate() {
     ConfigValidator(this).check();
   }
