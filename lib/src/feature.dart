@@ -1,11 +1,24 @@
 import 'package:dynafeat/src/feature_rule.dart';
 import 'package:dynafeat/src/feature_type.dart';
 
+/// Represents a single feature flag definition.
+///
+/// A [Feature] consists of a unique [id], a [summary] for documentation,
+/// its data [type], a default [value], and a list of [rules] for dynamic evaluation.
 final class Feature<T extends Object> {
+  /// Unique identifier for the feature.
   final String id;
+
+  /// A short description of the feature's purpose.
   final String summary;
+
+  /// The data type of the feature's value.
   final FeatureType type;
+
+  /// A list of rules that can override the default value based on context.
   final List<Rule<T>> rules;
+
+  /// The default value for this feature if no rules match.
   final T value;
 
   const Feature._({
@@ -16,10 +29,15 @@ final class Feature<T extends Object> {
     this.rules = const [],
   });
 
+  /// Validates if the default [value] matches the feature's [type].
   bool validate() => type.validate(value);
 
+  /// Returns true if the feature has any associated rules.
   bool hasRules() => rules.isNotEmpty;
 
+  /// Imports a [Feature] from a raw [Map], typically from JSON.
+  ///
+  /// Automatically determines the feature's type and parses its rules.
   static Feature import(Map<String, dynamic> value) {
     final id = value['id'] as String;
     final summary = value['summary'] as String;
@@ -37,6 +55,7 @@ final class Feature<T extends Object> {
     );
   }
 
+  /// Exports the feature to a serializable [Map].
   Map<String, Object> export() {
     return {
       'id': id,
@@ -47,6 +66,16 @@ final class Feature<T extends Object> {
     };
   }
 
+  /// Creates a string-based feature.
+  ///
+  /// Example:
+  /// ```dart
+  /// final feature = Feature.string(
+  ///   id: 'api_url',
+  ///   summary: 'The base API URL',
+  ///   value: 'https://api.example.com',
+  /// );
+  /// ```
   static Feature<String> string({
     required String id,
     required String summary,
@@ -62,6 +91,7 @@ final class Feature<T extends Object> {
     );
   }
 
+  /// Creates a number-based feature (integer or double).
   static Feature<num> number({
     required String id,
     required String summary,
@@ -77,6 +107,7 @@ final class Feature<T extends Object> {
     );
   }
 
+  /// Creates a boolean feature flag.
   static Feature<bool> boolean({
     required String id,
     required String summary,

@@ -37,6 +37,11 @@ final class FeatureConfig {
   ///
   /// This factory is typically used when parsing JSON data received
   /// from a remote API or local storage.
+  ///
+  /// Example:
+  /// ```dart
+  /// final config = FeatureConfig.import(jsonDecode(jsonString));
+  /// ```
   factory FeatureConfig.import(Map<String, dynamic> value) {
     final rev = value['rev'] as int;
     List<Context> context = [];
@@ -49,7 +54,7 @@ final class FeatureConfig {
     }
 
     if (!value.containsKey('features')) {
-      throw ArgumentError();
+      throw ArgumentError('Missing required "features" field');
     }
 
     final data = value['features'] as List? ?? [];

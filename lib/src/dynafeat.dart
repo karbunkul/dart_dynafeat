@@ -49,6 +49,17 @@ base class Dynafeat {
     return _resolver.resolve<T>(featureId: id, context: context);
   }
 
+  /// Exports the configuration to a serializable [Map].
+  ///
+  /// The returned map contains the revision, context definitions, and features,
+  /// making it suitable for JSON persistence or network transmission.
+  ///
+  /// Example:
+  /// ```dart
+  /// final map = dynafeat.export();
+  /// ```
+  Map<String, dynamic> export() => _config.export();
+
   /// Validates the current configuration for consistency.
   ///
   /// Checks for issues like duplicate IDs or missing context definitions.
@@ -66,4 +77,7 @@ base class Dynafeat {
       features: value.features,
     );
   }
+
+  @override
+  String toString() => _config.toJson(pretty: true);
 }

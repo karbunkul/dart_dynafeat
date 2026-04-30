@@ -13,4 +13,6 @@ void main() {
   final dynafeat = Dynafeat.from(config)..validate();
   print(dynafeat.feature('search_base_url_common', context: {'env': 'prod'}));
   print(dynafeat.feature('appmetrica_api_key', context: {'env': 'stage'}));
+
+  print(dynafeat);
 }
